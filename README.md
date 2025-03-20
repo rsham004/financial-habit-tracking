@@ -1,4 +1,4 @@
-# Expense Management System
+# Financial Habits Tracking System
 
 I have been concerned about well being at retirement for young people for sometime. Today the norm is that individuals can change their financial habits if presented with facts (rather than telling them what to do with their life).
 I start from calculating how much money a person (to live) would need post-retirement. This is based on the well-established notion that the annual cost outlay must be 4% of the retirement savings corpus.
