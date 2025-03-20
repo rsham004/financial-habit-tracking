@@ -13,8 +13,9 @@ Some other articles that probably go hand-in-hand:
 
 
 This project is an expense management system that consists of a Streamlit frontend application and a FastAPI backend server.
-Its primary intention is to enable the use of expense habits analytics to drive changes in financial behavious and mindset by being bluntly factual.
+Its primary intention is to enable the use of expense habits analytics to drive changes in financial behaviour and mindset by being bluntly factual.
 I have added some categories such as Narcotics and Alcohol. I think other categories to be added are expenses on gaming devices and tobacco.
+
 
 
 ## Project Structure
