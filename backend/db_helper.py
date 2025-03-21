@@ -7,10 +7,10 @@ logger = setup_logger('db_helper')
 @contextmanager
 def get_db_cursor(commit=False):
 	connection = mysql.connector.connect(
-		host="codebasics-db.chsy4soomg0u.ap-southeast-2.rds.amazonaws.comcodebasics-db.chsy4soomg0u.ap-southeast-2.rds.amazonaws.com",
+		host="localhost",
 		user="root",
-		password="iRGjzcZ5TcLhfnH5ssyc",
-		database="codebasics-db"
+		password="root",
+		database="expense_manager"
 	)
 
 	cursor = connection.cursor(dictionary=True)
