@@ -1,19 +1,25 @@
-import mysql.connector
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from contextlib import contextmanager
+import os
+from dotenv import load_dotenv
 from logging_setup import setup_logger
 
+# Load environment variables from .env file
+load_dotenv()
 logger = setup_logger('db_helper')
 
 @contextmanager
 def get_db_cursor(commit=False):
-	connection = mysql.connector.connect(
-		host="localhost",
-		user="root",
-		password="root",
-		database="expense_manager"
+	connection = psycopg2.connect(
+		host=os.getenv("DB_HOST", "localhost"),
+		user=os.getenv("DB_USER", "expense_user"),
+		password=os.getenv("DB_PASSWORD", ""),
+		database=os.getenv("DB_NAME", "expense_manager"),
+		port=os.getenv("DB_PORT", "5432")
 	)
 
-	cursor = connection.cursor(dictionary=True)
+	cursor = connection.cursor(cursor_factory=RealDictCursor)
 	yield cursor
 
 	if commit:
@@ -63,10 +69,10 @@ def fetch_expense_summary(start_date, end_date):
 	logger.info(f"fetch_expense_summary called with start:{start_date} end: {end_date}")
 	with get_db_cursor() as cursor:
 		cursor.execute(
-			'''select category, SUM(amount) as Total
-				from expense_manager.expenses
+			'''SELECT category, SUM(amount) as "Total"
+				FROM expenses
 				WHERE expense_date
-				BETWEEN %s AND %s 
+				BETWEEN %s AND %s
 				GROUP BY category''',
 			(start_date, end_date)
 		)
@@ -78,12 +84,12 @@ def fetch_expense_summary_by_month():
 
 	with get_db_cursor() as cursor:
 		cursor.execute(
-			''' SELECT 
-				MONTHNAME(expense_date) AS month,  
-				SUM(amount) AS Total
-				FROM expense_manager.expenses
-				GROUP BY  month 
-				ORDER BY STR_TO_DATE(month, '%b') 
+			''' SELECT
+				TO_CHAR(expense_date, 'Month') AS month,
+				SUM(amount) AS "Total"
+				FROM expenses
+				GROUP BY month
+				ORDER BY MIN(expense_date)
 				''',
 			)
 		data = cursor.fetchall()
